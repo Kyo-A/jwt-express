@@ -19,9 +19,9 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.post = require("../models/post.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -33,6 +33,7 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
+
 
 db.ROLES = ["user", "admin", "moderator"];
 
