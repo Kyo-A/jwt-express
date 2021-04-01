@@ -11,7 +11,7 @@ module.exports = {
             });
             if (userCollection) {
                 const postCollection = await Post.findAll({
-                    userId: req.params.userId
+                    where: { userId: req.params.userId }
                 })
 
                 res.status(201).send(postCollection);
