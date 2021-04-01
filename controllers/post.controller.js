@@ -5,10 +5,10 @@ module.exports = {
 
     async getAllPostsOfUser(req, res) {
         try {
+
             const userCollection = await User.findOne({
                 id: req.params.userId
             });
-
             if (userCollection) {
                 const postCollection = await Post.findAll({
                     userId: req.params.userId
@@ -100,7 +100,6 @@ module.exports = {
                 })
 
                 if (deletedPost) {
-                   
                     deletedPost.destroy();
                     res.status(201).send("Deleted");
                 }
