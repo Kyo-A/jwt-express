@@ -6,7 +6,7 @@ module.exports = {
     async getAllPostsOfUser(req, res) {
         try {
 
-            const userCollection = await User.findOne({
+            const userCollection = await User.findByPk({
                 id: req.params.userId
             });
             if (userCollection) {
@@ -30,7 +30,7 @@ module.exports = {
     async createPostByUser(req, res) {
 
         try {
-            const userCollection = await User.findOne({
+            const userCollection = await User.findByPk({
                 id: req.params.userId
             });
             if (userCollection) {
@@ -53,7 +53,7 @@ module.exports = {
 
     async updatePostByUser(req, res) {
         try {
-            const userCollection = await User.findOne({
+            const userCollection = await User.findByPk({
                 id: req.params.userId
             });
 
@@ -89,7 +89,7 @@ module.exports = {
 
     async deletePostByUser(req, res) {
         try {
-            const userCollection = await User.findOne({
+            const userCollection = await User.findByPk({
                 id: req.params.userId
             });
 
