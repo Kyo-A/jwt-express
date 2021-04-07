@@ -5,13 +5,16 @@ module.exports = {
 
     async getAllPostsOfUser(req, res) {
         try {
+            
+            const {userId} = req.params;
 
-            const userCollection = await User.findByPk({
+            const userCollection = await User.findOne({
                 id: req.params.userId
             });
             if (userCollection) {
+
                 const postCollection = await Post.findAll({
-                    where: { userId: req.params.userId }
+                    where: { userId: userId }
                 })
 
                 res.status(201).send(postCollection);
