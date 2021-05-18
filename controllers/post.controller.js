@@ -1,26 +1,26 @@
-const User = require("../models").user;
-const Post = require("../models").post;
+const user = require("../models").user;
+const post = require("../models").post;
 
 module.exports = {
 
     async getAllPostsOfUser(req, res) {
         try {
-            
-            const {userId} = req.params;
+            // ES6
+            const {userId} = req.params; // ou const userId = req.params.userId; en ES5
 
-            const userCollection = await User.findOne({
+            const userCollection = await user.findOne({
                 id: req.params.userId
             });
             if (userCollection) {
 
-                const postCollection = await Post.findAll({
+                const postCollection = await post.findAll({
                     where: { userId: userId }
                 })
 
                 res.status(201).send(postCollection);
             }
             else {
-                re.status(404).send("User Not Found")
+                res.status(404).send("User Not Found")
             }
         }
         catch (e) {
@@ -33,18 +33,18 @@ module.exports = {
     async createPostByUser(req, res) {
 
         try {
-            const userCollection = await User.findByPk({
+            const userCollection = await user.findOne({
                 id: req.params.userId
             });
             if (userCollection) {
-                const post = await Post.create({
-                    title: req.body.title,
+                const postCreated = await post.create({
+                    titre: req.body.titre,
                     userId: req.params.userId
                 });
-                res.status(201).send(post)
+                res.status(201).send(postCreated)
             }
             else {
-                re.status(404).send("User Not Found")
+                res.status(404).send("User Not Found")
             }
 
         }
@@ -55,20 +55,22 @@ module.exports = {
     },
 
     async updatePostByUser(req, res) {
+        const {postId} = req.params; // ou const userId = req.params.userId; en ES5
+
         try {
-            const userCollection = await User.findByPk({
+            const userCollection = await user.findOne({
                 id: req.params.userId
             });
 
             if (userCollection) {
 
-                const postCollection = await Post.findOne({
-                    userId: req.params.userId
-                })
+                const postCollection = await post.findOne(({
+                    where: { id: postId }
+                }))
 
                 if (postCollection) {
                     const updatedPost = await postCollection.update({
-                        title: req.body.title,
+                        titre: req.body.titre,
                         id: req.params.postId,
                         userId: req.params.userId
                     })
@@ -80,7 +82,7 @@ module.exports = {
                 }
             }
             else {
-                re.status(404).send("User Not Found")
+                res.status(404).send("User Not Found")
             }
         }
         catch (e) {
@@ -89,18 +91,20 @@ module.exports = {
         }
 
     },
-
     async deletePostByUser(req, res) {
+
+        const {postId} = req.params; // ou const userId = req.params.userId; en ES5
+
         try {
-            const userCollection = await User.findByPk({
+            const userCollection = await user.findOne({
                 id: req.params.userId
             });
 
             if (userCollection) {
 
-                const deletedPost = await Post.findOne({
-                    id: req.params.postId
-                })
+                const deletedPost = await post.findOne(({
+                    where: { id: postId }
+                }))
 
                 if (deletedPost) {
                     deletedPost.destroy();
@@ -112,6 +116,38 @@ module.exports = {
             }
             else {
                 re.status(404).send("User Not Found")
+            }
+        }
+        catch (e) {
+            console.log(e);
+            res.status(400).send(e);
+        }
+
+    },
+
+    async getOnePostByUser(req, res) {
+        const {postId} = req.params; // ou const userId = req.params.userId; en ES5
+
+        try {
+            const userCollection = await user.findOne({
+                id: req.params.userId
+            });
+
+            if (userCollection) {
+
+                const Post = await post.findOne(({
+                    where: { id: postId }
+                }))
+
+                if (Post) {
+                    res.status(201).send(Post);
+                }
+                else {
+                    res.status(404).send("Post Not Found");
+                }
+            }
+            else {
+                res.status(404).send("User Not Found")
             }
         }
         catch (e) {
