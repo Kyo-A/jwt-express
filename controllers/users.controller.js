@@ -6,15 +6,15 @@ module.exports = {
 
     async getUsers(req, res) {
         User.findAll()
-        .then(data => {
-          res.send(data);
-        })
-        .catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while retrieving users."
-          });
-        });
+            .then(data => {
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while retrieving users."
+                });
+            });
 
     },
 
@@ -26,13 +26,11 @@ module.exports = {
             });
             return;
         }
-        const user = await User.create({
+        await User.create({
             username: req.body.username,
             email: req.body.email,
             password: req.body.password
         })
-        // Save User in the database
-        User.create(user)
             .then(data => {
                 res.send(data);
             })
